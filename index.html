@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Music Spot</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link href="css/jquery.bxslider.css" rel="stylesheet" />
+		<link id="favicon" rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+		<script src="js/jquery-1.11.1.min.js"></script>
+		<script src="js/jquery.fittext.js"></script>
+		<script src="js/animatescroll/animatescroll.js"></script>
+		<script src="js/jquery.bxslider.min.js"></script>
+		<script type="text/javascript">
+			function open_login(){
+				document.getElementById('cont').className += "container";
+				document.getElementById('box_login').className += "box_login";
+				document.getElementById('box_login').style.display = "block";
+				document.getElementById('close').style.display = 'inline';
+				document.getElementById('form_login').style.display = 'inline';
+				document.getElementById('form_login-display').style.display = 'inline';
+				document.body.style.overflow = 'hidden';
+			}
+			
+			function close_login(){
+				document.getElementById('cont').removeAttribute("class");
+				document.getElementById('box_login').removeAttribute("class");
+				document.getElementById('close').style.display = 'none';
+				document.getElementById('form_login').style.display = 'none';
+				document.getElementById('form_login-display').style.display = 'none';
+				document.body.style.overflow = 'visible';
+			}
+			
+			function open_signin(){
+				document.getElementById('cont').className += "container";
+				document.getElementById('box_signin').className += "box_signin";
+				document.getElementById('box_signin').style.display = "block";
+				document.getElementById('close_signin').style.display = 'inline';
+				document.getElementById('form_signin').style.display = 'inline';
+				document.getElementById('form_signin-display').style.display = 'inline';
+			}
+			
+			function close_signin(){
+				document.getElementById('cont').removeAttribute("class");
+				document.getElementById('box_signin').removeAttribute("class");
+				document.getElementById('close_signin').style.display = 'none';
+				document.getElementById('form_signin').style.display = 'none';
+				document.getElementById('form_signin-display').style.display = 'none';
+			}
+			
+			/* fix vertical when not overflow call fullscreenFix() if .fullscreen content changes */
+			function fullscreenFix(){
+				var h = $('body').height();
+				// set .fullscreen height
+				$(".content-b").each(function(i){
+					if($(this).innerHeight() <= h){
+						$(this).closest(".fullscreen").addClass("not-overflow");
+					}
+				});
+			}
+			$(window).resize(fullscreenFix);
+			fullscreenFix();
+			
+			/* resize background images */
+			function backgroundResize(){
+				var windowH = $(window).height();
+				$(".background").each(function(i){
+					var path = $(this);
+					// variables
+					var contW = path.width();
+					var contH = path.height();
+					var imgW = path.attr("data-img-width");
+					var imgH = path.attr("data-img-height");
+					var ratio = imgW / imgH;
+					// overflowing difference
+					var diff = parseFloat(path.attr("data-diff"));
+					diff = diff ? diff : 0;
+					// remaining height to have fullscreen image only on parallax
+					var remainingH = 0;
+					if(path.hasClass("parallax")){
+						var maxH = contH > windowH ? contH : windowH;
+						remainingH = windowH - contH;
+					}
+					// set img values depending on cont
+					imgH = contH + remainingH + diff;
+					imgW = imgH * ratio;
+					// fix when too large
+					if(contW > imgW){
+						imgW = contW;
+						imgH = imgW / ratio;
+					}
+					//
+					path.data("resized-imgW", imgW);
+					path.data("resized-imgH", imgH);
+					path.css("background-size", imgW + "px " + imgH + "px");
+				});
+			}
+			$(window).resize(backgroundResize);
+			$(window).focus(backgroundResize);
+			backgroundResize();
+			
+			$(document).ready(function(){
+				$('.bxslider').bxSlider();
+				jQuery("#title, #big_title, #big_title2, #big_title3").fitText();
+			});
+		</script>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div id="cont"></div>
+		<a id="top"></a>
+		<div id="tab1" class="tab1">	
+			<div class="fullscreen background" style="background-image:url('img/people.jpg');" data-img-width="1920" data-img-height="1080">
+				<div class="content-a">
+					<div class="content-b">
+						<nav>
+							<ul>
+								<a onclick="$('#tab3').animatescroll();" href="#"><li>Login / Register Now</li></a>
+							</ul>
+						</nav>
+						<div class="title">
+							<h1 id="title">MUSIC SPOT</h1>
+							<p>Take your music everywhere!</p>
+						</div>
+						<div class="arrow">
+							<div style="width:50px;position:absolute;left:0;
+							right:0;bottom:0;margin:auto;">
+								<a onclick="$('#tab2').animatescroll();" href="#">
+									<div class="arrow_down">
+										<img id="img" src="img/arrow.png">
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="tab2" class="tab2">
+			<div class="arrow-top">
+				<div style="width:50px;position:absolute;left:0;right:0;top:0;margin:auto;">
+					<a onclick="$('#top').animatescroll();" href="#">
+						<div class="arrow_up" style="background-color:#ddd;">
+							<img id="img" src="img/arrow-top.png">
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="slide">
+				<ul class="bxslider">
+					<li>
+						<img src="img/playlist.jpg" style="z-index:1;"/>
+						<div class="big_title">
+							<h1 id="big_title">Create your own playlist and listen to your favorite musics everywhere!</h1>
+						</div>
+					</li>
+					<li>
+						<img src="img/friends.jpg" style="z-index:1;"/>
+						<div class="big_title2">
+							<h1 id="big_title2">Follow your friends and enjoy their favorite musics!</h1>
+						</div>
+					</li>
+					<li>
+						<img src="img/mobile.jpg" style="z-index:1;"/>
+						<div class="big_title3">
+							<h1 id="big_title3">Use Music Spot in your phone!</h1>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="arrow">
+				<div style="width:50px;position:absolute;left:0;right:0;bottom:0;margin:auto;">
+					<a onclick="$('#tab3').animatescroll();" href="#">
+						<div class="arrow_down" style="background-color:#ddd;">
+							<img id="img" src="img/arrow.png">
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div id="tab3" class="tab3">
+			<div class="arrow-mid">
+				<div style="width:35px;margin-left:auto;margin-right:auto;">
+					<a onclick="$('#top').animatescroll();" href="#">
+						<div class="arrow_up-last" style="background-color:#00e837;">
+							<img id="img" src="img/arrow-white.png">
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="box_login">
+				<div id="form_login" class="login">
+					<h1 id="title_login">LOGIN</h1>
+					<form id="form_login-display">
+						<input type="email" name="email" placeholder="E-mail">
+						<input type="password" name="pass" placeholder="Password">
+						<input type="submit" value="Login">
+					</form>
+				</div>
+			</div>
+			<div class="box_signin">
+				<div id="form_signin" class="signin">
+					<h1 id="title_signin">REGISTER NOW</h1>
+					<form id="form_signin-display">
+						<input type="email" name="email" placeholder="E-mail">
+						<input type="password" name="pass" placeholder="Password">
+						<input type="password" name="pass_confirm" placeholder="Confirm Password">
+						<input type="submit" value="Register now">
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
